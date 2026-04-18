@@ -1,0 +1,1 @@
+# basic-mean-stack-crud-for-single-resource

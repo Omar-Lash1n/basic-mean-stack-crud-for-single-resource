@@ -1,0 +1,66 @@
+<div class="container">
+  <div class="header">
+    <h1>Task Board</h1>
+    <p>Manage your daily tasks with ease</p>
+  </div>
+
+  <div class="glass-panel">
+    <h2>{{ isEditing ? 'Edit Task' : 'Add New Task' }}</h2>
+    <form (ngSubmit)="onSubmit()" #taskForm="ngForm" style="margin-top: 1.5rem;">
+      <div class="form-group">
+        <label for="title">Task Title</label>
+        <input 
+          type="text" 
+          id="title" 
+          name="title" 
+          class="form-control" 
+          placeholder="e.g., Buy groceries" 
+          [(ngModel)]="currentTask.title" 
+          required>
+      </div>
+
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea 
+          id="description" 
+          name="description" 
+          class="form-control" 
+          rows="3" 
+          placeholder="Detailed description..." 
+          [(ngModel)]="currentTask.description"></textarea>
+      </div>
+
+      <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+        <button type="submit" class="btn btn-primary" [disabled]="!taskForm.form.valid">
+          {{ isEditing ? 'Update Task' : 'Create Task' }}
+        </button>
+        <button type="button" class="btn" *ngIf="isEditing" (click)="resetForm()">
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <div class="tasks-grid" *ngIf="tasks.length > 0; else emptyState">
+    <div *ngFor="let task of tasks" class="task-card" [style.background-color]="task.color">
+      <h3>{{ task.title }}</h3>
+      <p>{{ task.description || 'No description provided.' }}</p>
+      
+      <div class="task-actions">
+        <button class="icon-btn" (click)="editTask(task)" title="Edit">
+          ✏️
+        </button>
+        <button class="icon-btn delete" (click)="deleteTask(task._id)" title="Delete">
+          🗑️
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #emptyState>
+    <div class="empty-state glass-panel">
+      <h3>No tasks found</h3>
+      <p>Start by adding a new task above!</p>
+    </div>
+  </ng-template>
+</div>
